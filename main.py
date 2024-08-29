@@ -116,7 +116,8 @@ def technique_identifying_forAttackGraph(graph: AttackGraph, template_list: List
         attackMatcher.add_technique_identifier(TechniqueIdentifier(template))
     attackMatcher.attack_matching()
     attackMatcher.print_match_result()
-    attackMatcher.to_json_file(output_file + "_techniques.json")
+    attackMatcher.to_txt(output_file + ".txt")
+    #attackMatcher.to_json_file(output_file + "_techniques.json") MODIFIED
 
     return attackMatcher
 

@@ -215,7 +215,30 @@ class AttackMatcher:
 
         return self.technique_matching_score
 
-    def to_json(self) -> dict:
+    def to_txt(self, output_file) -> dict:
+        selected_techniques_dict = {}
+
+        for k, v in self.technique_matching_score.items():
+            if v >= 0.9:
+            # selected_techniques_dict[k] = tuple(self.technique_matching_subgraph[k])
+                involved_node_dict = {}
+                for node in self.technique_matching_subgraph[k]:
+                    if self.attack_graph.attackNode_dict[node].ioc != "":
+                        involved_node_dict[node] = {
+                            "type": self.attack_graph.attackNode_dict[node].type,
+                            "nlp": tuple(self.attack_graph.attackNode_dict[node].nlp),
+                            "ioc": tuple(self.attack_graph.attackNode_dict[node].ioc)}
+                selected_techniques_dict[k] = involved_node_dict
+
+    # Write to a text file instead of creating a JSON string
+        with open(output_file, 'w+') as f:
+            for technique, nodes in selected_techniques_dict.items():
+                f.write(f"{technique}\n")
+                ''''for node, details in nodes.items():
+                    f.write(f"  {node}: {details}\n")'''
+
+'''
+    def to_json(self) -> dict: MODIFICATION
         selected_techniques_dict = {}
 
         for k, v in self.technique_matching_score.items():
@@ -236,7 +259,7 @@ class AttackMatcher:
     def to_json_file(self, output_file):
         with open(output_file, "w+") as output:
             output.write(self.to_json())
-
+'''
 
 class Evaluation:
 
